@@ -9,6 +9,31 @@ var fart_charge : float = 0.0
 var fart_charging: bool = false
 var charge_power : float = 0.4
 
+# Fart attributes 
+var fart_decibels : float = 0.0
+var fart_smell_level : float = 0.0
+enum FartType
+{
+	NONE,
+	UNNOTICABLE,
+	PEE_YEW,
+	STINKY,
+	VILE,
+	DEATH
+}
+var fart_smell : FartType = FartType.NONE
+
+# Audience AI
+enum AudienceReaction
+{
+	NONE,        # No one notices anything.
+	SUSPICIOUS,  # Some sniffing or minor suspicion.
+	ALERT,       # Audience visibly reacting; looking around.
+	DISGUSTED,   # Audience clearly disgusted; audible groans.
+	PANIC        # Full panic; audience actively fleeing or complaining.
+}
+var current_reaction : AudienceReaction = AudienceReaction.NONE
+
 # UI Elements
 @onready var fart_meter = $UI/FartMeter
 @onready var power_meter = $UI/PowerMeter
@@ -43,6 +68,22 @@ func charge_fart(charge: bool):
 		release_fart()
 	else:
 		fart_charge -= charge_power
+
+func calculate_fart_stink():
+	match fart_smell:
+		FartType.NONE:
+			print("No Smell")
+		FartType.UNNOTICABLE:
+			print("Unnoticable Smell")
+		FartType.PEE_YEW:
+			print("Pee Yew Smell")
+		FartType.STINKY:
+			print("Stinky Smell")
+		FartType.VILE:
+			print("Vile Smell")
+		FartType.DEATH:
+			print("Death Smell")
+			
 
 # Release fart based on charge value
 func release_fart():
