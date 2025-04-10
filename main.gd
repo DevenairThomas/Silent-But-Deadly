@@ -1,98 +1,59 @@
 extends Node2D
 
-# Fart pressure variables
-var fart_level : float = 0.0
-var fart_rate : float = 10.0
+# Initialize Game Objects
+@onready var hud_manager = $UI/canvasHUD
+@onready var environment_manager = $LevelEnvironment/EnvironmentManager
+@onready var audience_manager = $AudienceSystem/AudienceManager
+@onready var player_controller = $PlayerCharacter/PlayerCharacterController
 
-# Fart charge variables
-var fart_charge : float = 0.0
-var fart_charging: bool = false
-var charge_power : float = 0.4
+# Attributes
+var charging : bool = false
+var charge_increase : bool = true
 
-# Fart attributes 
-var fart_decibels : float = 0.0
-var fart_smell_level : float = 0.0
-enum FartType
-{
-	NONE,
-	UNNOTICABLE,
-	PEE_YEW,
-	STINKY,
-	VILE,
-	DEATH
-}
-var fart_smell : FartType = FartType.NONE
-
-# Audience AI
-enum AudienceReaction
-{
-	NONE,        # No one notices anything.
-	SUSPICIOUS,  # Some sniffing or minor suspicion.
-	ALERT,       # Audience visibly reacting; looking around.
-	DISGUSTED,   # Audience clearly disgusted; audible groans.
-	PANIC        # Full panic; audience actively fleeing or complaining.
-}
-var current_reaction : AudienceReaction = AudienceReaction.NONE
-
-# UI Elements
-@onready var fart_meter = $UI/FartMeter
-@onready var power_meter = $UI/PowerMeter
+var gas_pressure : float = 0.0
+var charge_power : float = 0.0
+var charge_rate  : float = 50.0
 
 func _process(delta):
-	fart_level_increase(delta)
-	charge_fart(fart_charging)
-	fart_charge = clamp(fart_charge, 0, 100)
-	power_meter.value = fart_charge
-	if fart_level >= 100:
-		game_over()
-		
-# Detect inputs
+	increase_charge(delta)
+	
+# ==============================================================================
+# ============================== GAME LOOP =====================================
+# ==============================================================================
 func _input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
-				fart_charging = true
-			else:
-				fart_charging = false
+				charging = true
+			if not event.pressed:
+				charging = false
+				release_fart()
 
-# Increase fart pressure over time
-func fart_level_increase(delta):
-	fart_level += fart_rate * delta
-	fart_level = clamp(fart_level, 0, 100)
-	fart_meter.value = fart_level
+# Power meter will charge up, then down, then up (looping)
+func increase_charge(delta):
+	if charging: 
+		if charge_increase:
+			charge_power += charge_rate * delta
+			if charge_power >= 100:
+				charge_power = 100
+				charge_increase = false
+		else:
+			charge_power -= charge_rate * delta
+			if charge_power <= 0:
+				charge_power = 0
+				charge_increase = true
+	hud_manager.charge_meter.value = charge_power
 
-# Control the fart charge power
-func charge_fart(charge: bool):
-	if charge == true:
-		fart_charge += charge_power
-		release_fart()
-	else:
-		fart_charge -= charge_power
-
-func calculate_fart_stink():
-	match fart_smell:
-		FartType.NONE:
-			print("No Smell")
-		FartType.UNNOTICABLE:
-			print("Unnoticable Smell")
-		FartType.PEE_YEW:
-			print("Pee Yew Smell")
-		FartType.STINKY:
-			print("Stinky Smell")
-		FartType.VILE:
-			print("Vile Smell")
-		FartType.DEATH:
-			print("Death Smell")
-			
-
-# Release fart based on charge value
+# Release pressure from charge power
 func release_fart():
-	fart_level -= fart_charge/10.0
-	fart_level = clamp(fart_level, 0, 100)
-	fart_meter.value = fart_level
-	print("Fart released Current level: ", fart_level)
+	gas_pressure = hud_manager.pressure_meter.value
+	gas_pressure -= charge_power
+	gas_pressure = clamp(gas_pressure, 0, 100)
+	hud_manager.pressure_meter.value = gas_pressure
+	print("Gas Pressure: ", gas_pressure, " Charge Power: ", charge_power)
 
-# The function
+# GAME OVER
 func game_over():
 	print("GAME OVER: Player Exploded")
 	get_tree().paused = true
+# ==============================================================================

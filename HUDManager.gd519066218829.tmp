@@ -1,0 +1,83 @@
+extends CanvasLayer
+
+class_name HUD_UIManager
+
+# UI Elements
+var fart_meter : ProgressBar
+var power_meter : ProgressBar
+var audience_reaction_meter : ProgressBar
+
+# Placeholder for futur assets
+var fart_meter_asset 	 : Texture = null
+var power_meter_asset 	 : Texture = null
+var audience_meter_asset : Texture = null
+
+# Constants for layout
+const METER_WIDTH 	 = 40
+const METER_HEIGHT 	 = 200
+const MARGIN 		 = 20
+const TOOLBAR_HEIGHT = 40
+
+func _ready():
+	# Create and add UI elements
+	_position_ui_elements()
+	get_tree().root.connect("size_changed", _on_window_resized())
+
+func _position_ui_elements():
+	DisplayServer.window_get_size()
+	var window_size = get_viewport().get_visible_rect().size
+	
+	# Position PowerMeter (left, vertically centered)
+	power_meter.size = Vector2(METER_WIDTH, METER_HEIGHT)
+	power_meter.position = Vector2(
+		MARGIN,
+		(window_size.y/2) - (METER_HEIGHT/2) + (TOOLBAR_HEIGHT/2)
+	)
+	
+	# Position FartMeter (right, vertically centered)
+	fart_meter.size = Vector2(METER_WIDTH, METER_HEIGHT)
+	fart_meter.position = Vector2(
+		MARGIN,
+		(window_size.y/2) - (METER_HEIGHT/2) + (TOOLBAR_HEIGHT/2)
+	)
+	
+	# Position AudienceReactionMeter (bottom, horizontally centered)
+	audience_reaction_meter.size = Vector2(METER_WIDTH, METER_HEIGHT)
+	audience_reaction_meter.position = Vector2(
+		(window_size.x/2) - (audience_reaction_meter.size.x/2),
+		window_size.y - audience_reaction_meter.size.y - MARGIN
+	)
+	
+func _on_window_resized():
+	_position_ui_elements()
+	
+# Expose UI elements for external control
+func set_fart_meter_value(value: float):
+	fart_meter.value = clamp(value, fart_meter.min_value, fart_meter.max_value)
+	
+func set_power_meter_value(value: float):
+	power_meter.value = clamp(value, power_meter.min_value, power_meter.max_value)
+	
+func set_audience_reaction_meter_value(value: float):
+	audience_reaction_meter.value = clamp(value, audience_reaction_meter.min_value, audience_reaction_meter.max_value)
+	
+func get_fart_meter() -> ProgressBar:
+	return fart_meter
+
+func get_power_meter() -> ProgressBar:
+	return power_meter
+
+func get_audience_reaction_meter() -> ProgressBar:
+	return audience_reaction_meter
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

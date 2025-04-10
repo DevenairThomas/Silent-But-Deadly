@@ -1,27 +1,241 @@
-[gd_scene load_steps=3 format=3 uid="uid://dh1x4qb2vic6s"]
+[gd_scene load_steps=4 format=3 uid="uid://dh1x4qb2vic6s"]
 
 [ext_resource type="Script" uid="uid://cr7o5xuuxw14u" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="Texture2D" uid="uid://rrjj6f5crhvu" path="res://icon.svg" id="2_h2yge"]
+[ext_resource type="Script" uid="uid://7r3oqhx3ron7" path="res://HUDManager.gd" id="6_7mycd"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_0xm2m")
 
-[node name="PlayerCharacter2D" type="Sprite2D" parent="."]
+[node name="Loader" type="Node" parent="."]
+
+[node name="AssetManager" type="Node" parent="."]
+
+[node name="PlayerCharacter" type="Node" parent="."]
+
+[node name="PlayerCharacterController" type="Node" parent="PlayerCharacter"]
+
+[node name="PlayerSprite" type="Sprite2D" parent="PlayerCharacter"]
+visible = false
 position = Vector2(550, 360)
 texture = ExtResource("2_h2yge")
 
+[node name="AudienceSystem" type="Node" parent="."]
+
+[node name="AudienceManager" type="Node" parent="AudienceSystem"]
+
+[node name="AudienceCharacters" type="Node" parent="AudienceSystem"]
+
+[node name="AnimationController" type="Node" parent="AudienceSystem"]
+
+[node name="LevelEnvironment" type="Node" parent="."]
+
+[node name="EnvironmentManager" type="Node" parent="LevelEnvironment"]
+
+[node name="Background" type="CanvasLayer" parent="LevelEnvironment/EnvironmentManager"]
+
+[node name="EventTimeline" type="Node" parent="LevelEnvironment/EnvironmentManager"]
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="Music" type="Node" parent="Audio"]
+
+[node name="SFX" type="Node" parent="Audio"]
+
+[node name="AudioController" type="Node" parent="Audio"]
+
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="FartMeter" type="ProgressBar" parent="UI"]
-offset_left = 1000.0
-offset_top = 575.0
-offset_right = 1500.0
-offset_bottom = 675.0
-rotation = 4.71239
+[node name="canvasTitleScreen" type="CanvasLayer" parent="UI"]
+visible = false
 
-[node name="PowerMeter" type="ProgressBar" parent="UI"]
-offset_left = 50.0
-offset_top = 575.0
-offset_right = 550.0
-offset_bottom = 675.0
-rotation = -1.5708
+[node name="Control" type="Control" parent="UI/canvasTitleScreen"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 120.0
+offset_top = 50.0
+offset_right = 120.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+
+[node name="TitlePlaceholder" type="TextEdit" parent="UI/canvasTitleScreen/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -296.0
+offset_top = -274.0
+offset_right = 304.0
+offset_bottom = 26.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "TITLE PLACEHOLDER
+"
+
+[node name="buttonStartGame" type="Button" parent="UI/canvasTitleScreen/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -201.0
+offset_top = 75.9999
+offset_right = 199.0
+offset_bottom = 126.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Start Game"
+
+[node name="buttonOptions" type="Button" parent="UI/canvasTitleScreen/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -202.0
+offset_top = 146.0
+offset_right = 198.0
+offset_bottom = 196.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Options
+"
+
+[node name="buttonExit" type="Button" parent="UI/canvasTitleScreen/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -204.0
+offset_top = 216.0
+offset_right = 196.0
+offset_bottom = 266.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Exit
+"
+
+[node name="canvasToolbar" type="CanvasLayer" parent="UI"]
+visible = false
+
+[node name="ToolbarContainer" type="HBoxContainer" parent="UI/canvasToolbar"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -551.0
+offset_top = 20.0
+offset_right = 549.0
+offset_bottom = 85.0
+grow_horizontal = 2
+
+[node name="BackButton" type="Button" parent="UI/canvasToolbar/ToolbarContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Go Back"
+
+[node name="LeftSpacer" type="Control" parent="UI/canvasToolbar/ToolbarContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LevelInformationLabel" type="RichTextLabel" parent="UI/canvasToolbar/ToolbarContainer"]
+clip_contents = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Level Information
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RightSpacer" type="Control" parent="UI/canvasToolbar/ToolbarContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SettingsButton" type="Button" parent="UI/canvasToolbar/ToolbarContainer"]
+layout_mode = 2
+text = "Options"
+
+[node name="canvasLevelSelect" type="CanvasLayer" parent="UI"]
+
+[node name="canvasAchievements" type="CanvasLayer" parent="UI"]
+
+[node name="canvasOptions" type="CanvasLayer" parent="UI"]
+
+[node name="canvasHUD" type="CanvasLayer" parent="UI"]
+script = ExtResource("6_7mycd")
+
+[node name="HUDContainer" type="Control" parent="UI/canvasHUD"]
+layout_mode = 3
+anchor_top = 0.1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 0.199997
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ReactionWrapper" type="Control" parent="UI/canvasHUD/HUDContainer"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -90.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="ReactionMeter" type="ProgressBar" parent="UI/canvasHUD/HUDContainer/ReactionWrapper"]
+layout_direction = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -351.0
+offset_top = -32.5
+offset_right = 349.0
+offset_bottom = -5.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="hboxContainerCharge" type="HBoxContainer" parent="UI/canvasHUD/HUDContainer"]
+layout_mode = 1
+offset_left = 80.0
+offset_top = 80.0
+offset_right = 150.0
+offset_bottom = 480.0
+
+[node name="ChargeMeter" type="ProgressBar" parent="UI/canvasHUD/HUDContainer/hboxContainerCharge"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+fill_mode = 3
+
+[node name="hboxContainerPressure" type="HBoxContainer" parent="UI/canvasHUD/HUDContainer"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -152.0
+offset_top = 80.0
+offset_right = -82.0
+offset_bottom = 480.0
+grow_horizontal = 0
+
+[node name="PressureMeter" type="ProgressBar" parent="UI/canvasHUD/HUDContainer/hboxContainerPressure"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+fill_mode = 3
