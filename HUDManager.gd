@@ -3,9 +3,12 @@ extends CanvasLayer
 class_name HUDManager
 
 # UI Elements
+@onready var hud_control : 	  Control 	  = $HUDContainer
+@onready var selectable_area : BoxContainer = $HUDContainer/SelectableArea
 @onready var pressure_meter : ProgressBar = $HUDContainer/hboxContainerPressure/PressureMeter
 @onready var charge_meter :   ProgressBar = $HUDContainer/hboxContainerCharge/ChargeMeter
 @onready var reaction_meter : ProgressBar = $HUDContainer/ReactionWrapper/ReactionMeter
+
 
 # Placeholder for futur assets
 var pressure_meter_asset : Texture = null
@@ -22,7 +25,12 @@ func _ready():
 
 func _position_ui_elements():
 	DisplayServer.window_get_size()
-	var window_size = get_viewport().get_visible_rect().size
+	
+func show_ui():
+	hud_control.visible = true
+
+func hide_ui():
+	hud_control.visible = false
 
 func _on_window_resized():
 	_position_ui_elements()

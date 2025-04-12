@@ -54,7 +54,6 @@ texture = ExtResource("2_h2yge")
 script = ExtResource("3_lquwl")
 
 [node name="canvasTitleScreen" type="CanvasLayer" parent="UI"]
-visible = false
 script = ExtResource("3_1bvp3")
 
 [node name="Control" type="Control" parent="UI/canvasTitleScreen"]
@@ -182,49 +181,12 @@ text = "Options"
 [node name="canvasHUD" type="CanvasLayer" parent="UI"]
 script = ExtResource("6_7mycd")
 
-[node name="ToolbarContainer" type="HBoxContainer" parent="UI/canvasHUD"]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -551.0
-offset_top = 20.0
-offset_right = 549.0
-offset_bottom = 85.0
-grow_horizontal = 2
-
-[node name="BackButton" type="Button" parent="UI/canvasHUD/ToolbarContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-text = "Go Back"
-
-[node name="LeftSpacer" type="Control" parent="UI/canvasHUD/ToolbarContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="LevelInformationLabel" type="RichTextLabel" parent="UI/canvasHUD/ToolbarContainer"]
-clip_contents = false
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "Level Information
-"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="RightSpacer" type="Control" parent="UI/canvasHUD/ToolbarContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="SettingsButton" type="Button" parent="UI/canvasHUD/ToolbarContainer"]
-layout_mode = 2
-text = "Options"
-
 [node name="HUDContainer" type="Control" parent="UI/canvasHUD"]
 layout_mode = 3
 anchor_top = 0.1
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 33.2
+offset_top = 0.199997
 offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
