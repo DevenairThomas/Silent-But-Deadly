@@ -25,6 +25,7 @@ signal game_state_changed(game_state: GameState)
 func _ready():
 	run_title_screen()
 	title_screen.connect("on_start_selected", _on_start_game_pressed)
+	hud_manager.connect("on_exit_play",_on_exit_play_pressed)
 
 func get_game_play_window() -> Rect2:
 	return Rect2(hud_manager.hud_control.position, hud_manager.hud_control.size)
@@ -38,6 +39,9 @@ func _on_start_game_pressed():
 	show_screen("canvasHUD")
 	current_state = GameState.GAME_MAIN
 	emit_signal("game_state_changed", current_state)
+	
+func _on_exit_play_pressed():
+	run_title_screen()
 
 func show_screen(screen_name: String):
 	for child in get_children():
