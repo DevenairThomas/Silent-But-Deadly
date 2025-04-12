@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dh1x4qb2vic6s"]
+[gd_scene load_steps=8 format=3 uid="uid://dh1x4qb2vic6s"]
 
 [ext_resource type="Script" uid="uid://cr7o5xuuxw14u" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="Script" uid="uid://co4i1is0guxdc" path="res://GameLoopEngine.gd" id="2_7mycd"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://b2077diq0ej33" path="res://TitleScreenManager.gd" id="3_1bvp3"]
 [ext_resource type="Script" uid="uid://c6kxkaviwlc5x" path="res://UIManager.gd" id="3_lquwl"]
 [ext_resource type="Script" uid="uid://7r3oqhx3ron7" path="res://HUDManager.gd" id="6_7mycd"]
+[ext_resource type="Script" uid="uid://6se3qasond4a" path="res://popupExitPlayManager.gd" id="7_272bh"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_0xm2m")
@@ -51,6 +52,7 @@ texture = ExtResource("2_h2yge")
 [node name="AudioController" type="Node" parent="Audio"]
 
 [node name="UI" type="CanvasLayer" parent="."]
+visible = false
 script = ExtResource("3_lquwl")
 
 [node name="canvasTitleScreen" type="CanvasLayer" parent="UI"]
@@ -174,86 +176,250 @@ layout_mode = 2
 text = "Options"
 
 [node name="canvasLevelSelect" type="CanvasLayer" parent="UI"]
+visible = false
 
-[node name="canvasAchievements" type="CanvasLayer" parent="UI"]
+[node name="ContainerLevelSelection" type="Control" parent="UI/canvasLevelSelect"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 34.0
+offset_top = 125.0
+offset_right = 1119.0
+offset_bottom = 614.0
+
+[node name="GridContainer" type="GridContainer" parent="UI/canvasLevelSelect/ContainerLevelSelection"]
+layout_mode = 0
+offset_right = 1083.0
+offset_bottom = 493.0
+columns = 5
 
 [node name="canvasOptions" type="CanvasLayer" parent="UI"]
+visible = false
 
-[node name="canvasHUD" type="CanvasLayer" parent="UI"]
-script = ExtResource("6_7mycd")
-
-[node name="ToolbarContainer" type="HBoxContainer" parent="UI/canvasHUD"]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -551.0
-offset_top = 20.0
-offset_right = 549.0
-offset_bottom = 85.0
+[node name="controlOptions" type="Control" parent="UI/canvasOptions"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
-
-[node name="BackButton" type="Button" parent="UI/canvasHUD/ToolbarContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-text = "Go Back"
-
-[node name="LeftSpacer" type="Control" parent="UI/canvasHUD/ToolbarContainer"]
-layout_mode = 2
+grow_vertical = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="LevelInformationLabel" type="RichTextLabel" parent="UI/canvasHUD/ToolbarContainer"]
+[node name="Button" type="Button" parent="UI/canvasOptions/controlOptions"]
+layout_mode = 2
+offset_left = 10.0
+offset_top = 7.0
+offset_right = 95.0
+offset_bottom = 81.0
+size_flags_horizontal = 0
+text = "Back
+"
+
+[node name="TitleContainer" type="HBoxContainer" parent="UI/canvasOptions/controlOptions"]
+layout_mode = 2
+offset_right = 1152.0
+offset_bottom = 80.0
+grow_horizontal = 2
+size_flags_vertical = 3
+
+[node name="LabelOptionTitle" type="RichTextLabel" parent="UI/canvasOptions/controlOptions/TitleContainer"]
 clip_contents = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "Level Information
+text = "Options
 "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RightSpacer" type="Control" parent="UI/canvasHUD/ToolbarContainer"]
+[node name="vboxOptionList" type="VBoxContainer" parent="UI/canvasOptions/controlOptions"]
+layout_mode = 2
+offset_left = 138.0
+offset_top = 106.0
+offset_right = 1020.0
+offset_bottom = 521.0
+size_flags_vertical = 3
+
+[node name="OptionFullScreen" type="VBoxContainer" parent="UI/canvasOptions/controlOptions/vboxOptionList"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="hbox" type="HBoxContainer" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionFullScreen"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionFullScreen/hbox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Full Screen"
+
+[node name="checkboxFullScreen" type="CheckBox" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionFullScreen/hbox"]
+layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="OptionResolution" type="VBoxContainer" parent="UI/canvasOptions/controlOptions/vboxOptionList"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="hbox" type="HBoxContainer" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionResolution"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionResolution/hbox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Resolution"
+
+[node name="MenuButton" type="MenuButton" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionResolution/hbox"]
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 3
+popup/item_0/text = "TestResolution_1"
+popup/item_0/id = 0
+popup/item_1/text = "TestResolution_2"
+popup/item_1/id = 1
+popup/item_2/text = "TestResolution_3"
+popup/item_2/id = 2
+
+[node name="OptionMusic" type="VBoxContainer" parent="UI/canvasOptions/controlOptions/vboxOptionList"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="hbox" type="HBoxContainer" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionMusic"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionMusic/hbox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Music"
+
+[node name="sliderMusic" type="HSlider" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionMusic/hbox"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MenuButton" type="Button" parent="UI/canvasHUD/ToolbarContainer"]
+[node name="OptionSFX" type="VBoxContainer" parent="UI/canvasOptions/controlOptions/vboxOptionList"]
 layout_mode = 2
-text = "Options"
+size_flags_vertical = 3
+
+[node name="hbox" type="HBoxContainer" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionSFX"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionSFX/hbox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "SFX
+"
+
+[node name="sliderSFX" type="HSlider" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionSFX/hbox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OptionFart" type="VBoxContainer" parent="UI/canvasOptions/controlOptions/vboxOptionList"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="hbox" type="HBoxContainer" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionFart"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionFart/hbox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Fart Option  (Placeholder Name)"
+
+[node name="MenuButton" type="HBoxContainer" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionFart/hbox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CheckBox" type="CheckBox" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionFart/hbox/MenuButton"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sound"
+
+[node name="CheckBox2" type="CheckBox" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionFart/hbox/MenuButton"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Visual"
+
+[node name="OptionResetData" type="VBoxContainer" parent="UI/canvasOptions/controlOptions/vboxOptionList"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="hbox" type="HBoxContainer" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionResetData"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionResetData/hbox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Reset Game Data"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionResetData/hbox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control2" type="Control" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionResetData/hbox/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="buttonReset" type="Button" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionResetData/hbox/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Reset
+"
+
+[node name="Control" type="Control" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionResetData/hbox/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SaveContainer" type="HBoxContainer" parent="UI/canvasOptions/controlOptions"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 412.0
+offset_top = -82.0
+offset_right = 551.0
+offset_bottom = -19.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 3
+
+[node name="buttonSaveOptions" type="Button" parent="UI/canvasOptions/controlOptions/SaveContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Save
+"
+
+[node name="canvasHUD" type="CanvasLayer" parent="UI"]
+visible = false
+script = ExtResource("6_7mycd")
 
 [node name="HUDContainer" type="Control" parent="UI/canvasHUD"]
 layout_mode = 3
-anchor_top = 0.1
+anchor_top = 0.151
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 33.2
+offset_top = 0.151993
 offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ReactionWrapper" type="Control" parent="UI/canvasHUD/HUDContainer"]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -90.0
-offset_bottom = -25.0
-grow_horizontal = 2
-grow_vertical = 0
+[node name="ReactionWrapper" type="HBoxContainer" parent="UI/canvasHUD/HUDContainer"]
+layout_mode = 0
+offset_left = 219.0
+offset_top = 457.0
+offset_right = 927.0
+offset_bottom = 486.0
 
 [node name="ReactionMeter" type="ProgressBar" parent="UI/canvasHUD/HUDContainer/ReactionWrapper"]
 layout_direction = 2
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -351.0
-offset_top = -32.5
-offset_right = 349.0
-offset_bottom = -5.5
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="hboxContainerCharge" type="HBoxContainer" parent="UI/canvasHUD/HUDContainer"]
 layout_mode = 1
@@ -284,3 +450,75 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 fill_mode = 3
+
+[node name="popupExitPlay" type="PopupPanel" parent="UI/canvasHUD/HUDContainer"]
+title = "Exit Level?"
+initial_position = 1
+size = Vector2i(300, 200)
+script = ExtResource("7_272bh")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/canvasHUD/HUDContainer/popupExitPlay"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 296.0
+offset_bottom = 196.0
+
+[node name="Control" type="Control" parent="UI/canvasHUD/HUDContainer/popupExitPlay/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/canvasHUD/HUDContainer/popupExitPlay/VBoxContainer/Control"]
+layout_mode = 2
+anchor_left = 0.493
+anchor_top = 0.548
+anchor_right = 0.493
+anchor_bottom = 0.548
+offset_left = -132.956
+offset_top = -35.036
+offset_right = 133.044
+offset_bottom = 34.964
+text = "Are you sure you want to exit level?"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/canvasHUD/HUDContainer/popupExitPlay/VBoxContainer"]
+layout_mode = 2
+
+[node name="buttonConfirm" type="Button" parent="UI/canvasHUD/HUDContainer/popupExitPlay/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "yes"
+
+[node name="Control" type="Control" parent="UI/canvasHUD/HUDContainer/popupExitPlay/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="buttonDecline" type="Button" parent="UI/canvasHUD/HUDContainer/popupExitPlay/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "no
+"
+
+[node name="canvasLevelButton" type="CanvasLayer" parent="UI"]
+visible = false
+
+[node name="Container" type="Container" parent="UI/canvasLevelButton"]
+offset_right = 189.0
+offset_bottom = 158.0
+
+[node name="buttonLevelSelect" type="Button" parent="UI/canvasLevelButton/Container"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "This is a place
+holder for
+the button image"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/canvasLevelButton/Container"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="spriteStar_1" type="Sprite2D" parent="UI/canvasLevelButton/Container/HBoxContainer"]
+
+[node name="spriteStar_2" type="Sprite2D" parent="UI/canvasLevelButton/Container/HBoxContainer"]
+
+[node name="spriteStar_3" type="Sprite2D" parent="UI/canvasLevelButton/Container/HBoxContainer"]

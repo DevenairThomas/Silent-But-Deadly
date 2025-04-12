@@ -11,9 +11,10 @@ class_name HUDManager
 @onready var btn_exit_play : Button         = $ToolbarContainer/BackButton
 @onready var btn_menu : Button              = $ToolbarContainer/MenuButton
 
+@onready var popup_exit_level : PopupPanel  = $HUDContainer/popupExitPlay
+
 # Placeholder for Level Information stuff
 @onready var level_information : RichTextLabel = $ToolbarContainer/LevelInformationLabel
-
 
 # Placeholder for futur assets
 var pressure_meter_asset : Texture = null
@@ -22,18 +23,13 @@ var reaction_meter_asset : Texture = null
 
 # Constants for layout : placeholder
 
-signal on_exit_play
-
 func _ready():
 	# Create and add UI elements
 	pressure_meter.value = 100
 	btn_exit_play.pressed.connect(on_exit_play_button_pressed)
 
 func on_exit_play_button_pressed():
-	# TODO: Open th pop up window
-	# until then we will just go back to the title screen
-	emit_signal("on_exit_play")
-	
+	popup_exit_level.show()
 	
 func show_ui():
 	hud_control.visible = true

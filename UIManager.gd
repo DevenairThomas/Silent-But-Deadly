@@ -25,7 +25,12 @@ signal game_state_changed(game_state: GameState)
 func _ready():
 	run_title_screen()
 	title_screen.connect("on_start_selected", _on_start_game_pressed)
-	hud_manager.connect("on_exit_play",_on_exit_play_pressed)
+
+	hud_manager.popup_exit_level.connect("on_pop_up_exit_play", _on_pop_up_exit_play)
+
+func _on_pop_up_exit_play():
+	hud_manager.popup_exit_level.hide()
+	run_title_screen()
 
 func get_game_play_window() -> Rect2:
 	return Rect2(hud_manager.hud_control.position, hud_manager.hud_control.size)
