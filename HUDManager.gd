@@ -9,7 +9,7 @@ class_name HUDManager
 @onready var reaction_meter : ProgressBar   = $HUDContainer/ReactionWrapper/ReactionMeter
 
 @onready var btn_exit_play : Button         = $ToolbarContainer/BackButton
-@onready var btn_menu : Button              = $ToolbarContainer/MenuButton
+@onready var btn_menu : Button              = $ToolbarContainer/SettingsButton
 
 @onready var popup_exit_level : PopupPanel  = $HUDContainer/popupExitPlay
 

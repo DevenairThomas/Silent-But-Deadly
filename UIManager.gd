@@ -3,6 +3,7 @@ extends CanvasLayer
 class_name UIManager
 
 @onready var title_screen = $canvasTitleScreen
+@onready var option_screen = $canvasOptions
 @onready var hud_manager = $canvasHUD
 
 enum GameState
@@ -10,7 +11,6 @@ enum GameState
 	TITLE_SCREEN,
 	LEVEL_SCREEN,
 	OPTIONS,
-	ACHIEVEMENTS,
 	EXIT_GAME,
 	GAME_MAIN,
 	GAME_OVER,
@@ -25,10 +25,12 @@ signal game_state_changed(game_state: GameState)
 func _ready():
 	run_title_screen()
 	title_screen.connect("on_start_selected", _on_start_game_pressed)
+	title_screen.connect("on_option_selected", _on_option_selected)
+	hud_manager.popup_exit_level.connect("on_pop_up_exit_confirm", _on_pop_up_exit_level)
+	option_screen.connect("on_go_back",run_title_screen)
 
-	hud_manager.popup_exit_level.connect("on_pop_up_exit_play", _on_pop_up_exit_play)
 
-func _on_pop_up_exit_play():
+func _on_pop_up_exit_level():
 	hud_manager.popup_exit_level.hide()
 	run_title_screen()
 
@@ -43,6 +45,11 @@ func run_title_screen():
 func _on_start_game_pressed():
 	show_screen("canvasHUD")
 	current_state = GameState.GAME_MAIN
+	emit_signal("game_state_changed", current_state)
+
+func _on_option_selected():
+	show_screen("canvasOptions")
+	current_state = GameState.OPTIONS
 	emit_signal("game_state_changed", current_state)
 	
 func _on_exit_play_pressed():

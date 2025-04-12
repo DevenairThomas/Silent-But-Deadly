@@ -1,12 +1,14 @@
-[gd_scene load_steps=8 format=3 uid="uid://dh1x4qb2vic6s"]
+[gd_scene load_steps=10 format=3 uid="uid://dh1x4qb2vic6s"]
 
 [ext_resource type="Script" uid="uid://cr7o5xuuxw14u" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="Script" uid="uid://co4i1is0guxdc" path="res://GameLoopEngine.gd" id="2_7mycd"]
 [ext_resource type="Texture2D" uid="uid://rrjj6f5crhvu" path="res://icon.svg" id="2_h2yge"]
 [ext_resource type="Script" uid="uid://b2077diq0ej33" path="res://TitleScreenManager.gd" id="3_1bvp3"]
 [ext_resource type="Script" uid="uid://c6kxkaviwlc5x" path="res://UIManager.gd" id="3_lquwl"]
+[ext_resource type="Script" uid="uid://ckmfd67njvu3m" path="res://popupExitGame.gd" id="6_5vw27"]
 [ext_resource type="Script" uid="uid://7r3oqhx3ron7" path="res://HUDManager.gd" id="6_7mycd"]
 [ext_resource type="Script" uid="uid://6se3qasond4a" path="res://popupExitPlayManager.gd" id="7_272bh"]
+[ext_resource type="Script" uid="uid://djdy8m53kpmfs" path="res://OptionUIManager.gd" id="7_kek77"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_0xm2m")
@@ -135,45 +137,55 @@ grow_vertical = 2
 text = "Exit
 "
 
+[node name="popupExitGame" type="PopupPanel" parent="UI/canvasTitleScreen"]
+auto_translate_mode = 1
+title = "Exit Level?"
+initial_position = 1
+size = Vector2i(300, 200)
+script = ExtResource("6_5vw27")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/canvasTitleScreen/popupExitGame"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 296.0
+offset_bottom = 196.0
+
+[node name="Control" type="Control" parent="UI/canvasTitleScreen/popupExitGame/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/canvasTitleScreen/popupExitGame/VBoxContainer/Control"]
+layout_mode = 2
+anchor_left = 0.493
+anchor_top = 0.548
+anchor_right = 0.493
+anchor_bottom = 0.548
+offset_left = -132.956
+offset_top = -35.036
+offset_right = 133.044
+offset_bottom = 34.964
+text = "Are you sure you want to exit level?"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/canvasTitleScreen/popupExitGame/VBoxContainer"]
+layout_mode = 2
+
+[node name="buttonConfirm" type="Button" parent="UI/canvasTitleScreen/popupExitGame/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "yes"
+
+[node name="Control" type="Control" parent="UI/canvasTitleScreen/popupExitGame/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="buttonDecline" type="Button" parent="UI/canvasTitleScreen/popupExitGame/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "no
+"
+
 [node name="canvasToolbar" type="CanvasLayer" parent="UI"]
 visible = false
-
-[node name="ToolbarContainer" type="HBoxContainer" parent="UI/canvasToolbar"]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -551.0
-offset_top = 20.0
-offset_right = 549.0
-offset_bottom = 85.0
-grow_horizontal = 2
-
-[node name="BackButton" type="Button" parent="UI/canvasToolbar/ToolbarContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-text = "Go Back"
-
-[node name="LeftSpacer" type="Control" parent="UI/canvasToolbar/ToolbarContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="LevelInformationLabel" type="RichTextLabel" parent="UI/canvasToolbar/ToolbarContainer"]
-clip_contents = false
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "Level Information
-"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="RightSpacer" type="Control" parent="UI/canvasToolbar/ToolbarContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="SettingsButton" type="Button" parent="UI/canvasToolbar/ToolbarContainer"]
-layout_mode = 2
-text = "Options"
 
 [node name="canvasLevelSelect" type="CanvasLayer" parent="UI"]
 visible = false
@@ -193,7 +205,7 @@ offset_bottom = 493.0
 columns = 5
 
 [node name="canvasOptions" type="CanvasLayer" parent="UI"]
-visible = false
+script = ExtResource("7_kek77")
 
 [node name="controlOptions" type="Control" parent="UI/canvasOptions"]
 layout_mode = 3
@@ -205,18 +217,9 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="UI/canvasOptions/controlOptions"]
-layout_mode = 2
-offset_left = 10.0
-offset_top = 7.0
-offset_right = 95.0
-offset_bottom = 81.0
-size_flags_horizontal = 0
-text = "Back
-"
-
 [node name="TitleContainer" type="HBoxContainer" parent="UI/canvasOptions/controlOptions"]
 layout_mode = 2
+offset_left = 5.0
 offset_right = 1152.0
 offset_bottom = 80.0
 grow_horizontal = 2
@@ -251,11 +254,11 @@ size_flags_vertical = 3
 [node name="RichTextLabel" type="RichTextLabel" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionFullScreen/hbox"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Full Screen"
+text = "Screen Mode"
 
-[node name="checkboxFullScreen" type="CheckBox" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionFullScreen/hbox"]
+[node name="menubtnScreenMode" type="MenuButton" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionFullScreen/hbox"]
 layout_mode = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 3
 
 [node name="OptionResolution" type="VBoxContainer" parent="UI/canvasOptions/controlOptions/vboxOptionList"]
 layout_mode = 2
@@ -270,7 +273,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Resolution"
 
-[node name="MenuButton" type="MenuButton" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionResolution/hbox"]
+[node name="menubtnResolution" type="MenuButton" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionResolution/hbox"]
 layout_mode = 2
 size_flags_horizontal = 3
 item_count = 3
@@ -329,16 +332,16 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Fart Option  (Placeholder Name)"
 
-[node name="MenuButton" type="HBoxContainer" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionFart/hbox"]
+[node name="hboxCheckbox" type="HBoxContainer" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionFart/hbox"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CheckBox" type="CheckBox" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionFart/hbox/MenuButton"]
+[node name="checkboxSound" type="CheckBox" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionFart/hbox/hboxCheckbox"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Sound"
 
-[node name="CheckBox2" type="CheckBox" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionFart/hbox/MenuButton"]
+[node name="checkboxVisual" type="CheckBox" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionFart/hbox/hboxCheckbox"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Visual"
@@ -356,21 +359,21 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Reset Game Data"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionResetData/hbox"]
+[node name="hboxResetGameData" type="HBoxContainer" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionResetData/hbox"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Control2" type="Control" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionResetData/hbox/HBoxContainer"]
+[node name="Control2" type="Control" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionResetData/hbox/hboxResetGameData"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="buttonReset" type="Button" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionResetData/hbox/HBoxContainer"]
+[node name="buttonReset" type="Button" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionResetData/hbox/hboxResetGameData"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Reset
 "
 
-[node name="Control" type="Control" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionResetData/hbox/HBoxContainer"]
+[node name="Control" type="Control" parent="UI/canvasOptions/controlOptions/vboxOptionList/OptionResetData/hbox/hboxResetGameData"]
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -393,6 +396,16 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Save
+"
+
+[node name="buttonBack" type="Button" parent="UI/canvasOptions/controlOptions"]
+layout_mode = 2
+offset_left = 10.0
+offset_top = 7.0
+offset_right = 95.0
+offset_bottom = 81.0
+size_flags_horizontal = 0
+text = "Back
 "
 
 [node name="canvasHUD" type="CanvasLayer" parent="UI"]
@@ -452,6 +465,7 @@ size_flags_vertical = 1
 fill_mode = 3
 
 [node name="popupExitPlay" type="PopupPanel" parent="UI/canvasHUD/HUDContainer"]
+auto_translate_mode = 1
 title = "Exit Level?"
 initial_position = 1
 size = Vector2i(300, 200)
@@ -496,6 +510,43 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "no
 "
+
+[node name="ToolbarContainer" type="HBoxContainer" parent="UI/canvasHUD"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -551.0
+offset_top = 20.0
+offset_right = 549.0
+offset_bottom = 85.0
+grow_horizontal = 2
+
+[node name="BackButton" type="Button" parent="UI/canvasHUD/ToolbarContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Go Back"
+
+[node name="LeftSpacer" type="Control" parent="UI/canvasHUD/ToolbarContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LevelInformationLabel" type="RichTextLabel" parent="UI/canvasHUD/ToolbarContainer"]
+clip_contents = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Level Information
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RightSpacer" type="Control" parent="UI/canvasHUD/ToolbarContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SettingsButton" type="Button" parent="UI/canvasHUD/ToolbarContainer"]
+layout_mode = 2
+text = "Options"
 
 [node name="canvasLevelButton" type="CanvasLayer" parent="UI"]
 visible = false
